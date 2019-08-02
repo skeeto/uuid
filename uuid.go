@@ -102,22 +102,17 @@ func Parse(s string) (UUID, error) {
 }
 
 // Gen is a version 4 UUID generator backed by a CSPRNG.
-type Gen struct {
-	state *frand.RNG
-}
+type Gen frand.RNG
 
 // NewGen initializes and returns a new version 4 UUID generator.
-func NewGen() (Gen, error) {
-	return Gen{frand.New()}, nil
+func NewGen() *Gen {
+	return (*Gen)(frand.New())
 }
 
 // NewV4 returns a fresh version 4 UUID.
-func (g Gen) NewV4() UUID {
+func (g *Gen) NewV4() UUID {
 	var u UUID
-	// Technically this will EOF when the keystream is exhausted, but in
-	// practice this will take so long (> 250,000 years) that it will
-	// never happen.
-	g.state.Read(u[:])
+	(*frand.RNG)(g).Read(u[:])
 	u[6] = (u[6] & 0x0f) | 0x40
 	u[8] = (u[8] & 0x3f) | 0x80
 	return u

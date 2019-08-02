@@ -23,7 +23,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"os"
 
 	"github.com/skeeto/uuid"
 )
@@ -32,12 +31,7 @@ func main() {
 	n := flag.Int("n", 1, "number of UUIDs to generate")
 	flag.Parse()
 
-	g, err := uuid.NewGen()
-	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		os.Exit(1)
-	}
-
+	g := uuid.NewGen()
 	for i := 0; i < *n; i++ {
 		fmt.Println(g.NewV4())
 	}
