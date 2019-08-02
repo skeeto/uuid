@@ -117,7 +117,7 @@ func NewGen() (Gen, error) {
 }
 
 // NewV4 returns a fresh version 4 UUID.
-func (g *Gen) NewV4() UUID {
+func (g Gen) NewV4() UUID {
 	var u UUID
 	// Technically this will EOF when the keystream is exhausted, but in
 	// practice this will take so long (> 250,000 years) that it will
