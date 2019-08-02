@@ -1,10 +1,9 @@
 package uuid
 
 import (
-	"crypto/rand"
 	"errors"
 
-	"github.com/skeeto/chacha-go"
+	"lukechampine.com/frand"
 )
 
 var (
@@ -104,16 +103,12 @@ func Parse(s string) (UUID, error) {
 
 // Gen is a version 4 UUID generator backed by a CSPRNG.
 type Gen struct {
-	state *chacha.Cipher
+	state *frand.RNG
 }
 
 // NewGen initializes and returns a new version 4 UUID generator.
 func NewGen() (Gen, error) {
-	var seed [40]byte
-	if _, err := rand.Read(seed[:]); err != nil {
-		return Gen{}, err
-	}
-	return Gen{chacha.New(seed[:32], seed[32:], 12)}, nil
+	return Gen{frand.New()}, nil
 }
 
 // NewV4 returns a fresh version 4 UUID.
