@@ -73,7 +73,7 @@ func (u UUID) MarshalBinary() ([]byte, error) {
 	return u[:], nil
 }
 
-func (u UUID) UnmarshalBinary(data []byte) error {
+func (u *UUID) UnmarshalBinary(data []byte) error {
 	if len(data) < len(u) {
 		return errors.New("invalid length")
 	}
