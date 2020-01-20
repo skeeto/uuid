@@ -9,10 +9,7 @@ import (
 )
 
 func BenchmarkSelf(b *testing.B) {
-	g, err := self.NewGen()
-	if err != nil {
-		panic(err)
-	}
+	g := self.NewGen()
 	for i := 0; i < b.N; i++ {
 		g.NewV4()
 	}
