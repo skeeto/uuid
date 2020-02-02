@@ -43,3 +43,15 @@ func TestParse(t *testing.T) {
 		}
 	}
 }
+
+func TestGenerate(t *testing.T) {
+	g := NewGen()
+	seen := make(map[UUID]struct{})
+	for i := 0; i < 1<<16; i++ {
+		u := g.NewV4()
+		if _, ok := seen[u]; ok {
+			t.Errorf("NewV4(%#v), UUID appeared twice", u)
+		}
+		seen[u] = struct{}{}
+	}
+}
