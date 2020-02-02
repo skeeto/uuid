@@ -4,7 +4,7 @@ This package generates version 4 UUIDs ([RFC 4122][rfc]). It's 35 times
 faster than other UUID libraries ([1][gofrs], [2][google]), and, unlike
 those libraries, cannot fail to generate a UUID.
 
-    BenchmarkSelf-8         100000000               18.1 ns/op
+    BenchmarkSelf-8         100000000               13.4 ns/op
     BenchmarkGofrs-8         2000000               623 ns/op
     BenchmarkGoogle-8        2000000               627 ns/op
 

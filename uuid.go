@@ -1,9 +1,11 @@
 package uuid
 
 import (
+	"crypto/rand"
+	"encoding/binary"
 	"errors"
 
-	"lukechampine.com/frand"
+	"nullprogram.com/x/isaac64"
 )
 
 var (
@@ -102,17 +104,23 @@ func Parse(s string) (UUID, error) {
 }
 
 // Gen is a version 4 UUID generator backed by a CSPRNG.
-type Gen frand.RNG
+type Gen isaac64.Rand
 
 // NewGen initializes and returns a new version 4 UUID generator.
 func NewGen() *Gen {
-	return (*Gen)(frand.New())
+	r := isaac64.New()
+	if err := r.SeedFrom(rand.Reader); err != nil {
+		panic(err)
+	}
+	return (*Gen)(r)
 }
 
 // NewV4 returns a fresh version 4 UUID.
 func (g *Gen) NewV4() UUID {
 	var u UUID
-	(*frand.RNG)(g).Read(u[:])
+	r := (*isaac64.Rand)(g)
+	binary.LittleEndian.PutUint64(u[0:], r.Uint64())
+	binary.LittleEndian.PutUint64(u[8:], r.Uint64())
 	u[6] = (u[6] & 0x0f) | 0x40
 	u[8] = (u[8] & 0x3f) | 0x80
 	return u
