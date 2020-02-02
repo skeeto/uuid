@@ -7,7 +7,7 @@ import (
 )
 
 var (
-	invalidErr = errors.New("invalid UUID")
+	errInvalid = errors.New("invalid UUID")
 
 	// Maps UUID bytes into their string representation indices
 	encode = [...]int{
@@ -85,16 +85,16 @@ func (u *UUID) UnmarshalBinary(data []byte) error {
 func Parse(s string) (UUID, error) {
 	var u UUID
 	if len(s) != 36 {
-		return u, invalidErr
+		return u, errInvalid
 	}
 	if s[8] != '-' || s[13] != '-' || s[18] != '-' || s[23] != '-' {
-		return u, invalidErr
+		return u, errInvalid
 	}
 	for i, j := range encode {
 		hi := nibbles[s[j+0]]
 		lo := nibbles[s[j+1]]
 		if hi == 0xff || lo == 0xff {
-			return u, invalidErr
+			return u, errInvalid
 		}
 		u[i] = hi<<4 | lo
 	}
