@@ -1,0 +1,10 @@
+github.com/gofrs/uuid v1.2.0 h1:coDhrjgyJaglxSjxuJdqQSSdUpG3w6p1OwN2od6frBU=
+github.com/gofrs/uuid v3.2.0+incompatible/go.mod h1:b2aQJv3Z4Fp6yNu3cdSllBxTCLRxnplIgP/c0N/04lM=
+github.com/gofrs/uuid v3.3.0+incompatible h1:8K4tyRfvU1CYPgJsveYFQMhpFd/wXNM7iK6rR7UHz84=
+github.com/gofrs/uuid v3.3.0+incompatible/go.mod h1:b2aQJv3Z4Fp6yNu3cdSllBxTCLRxnplIgP/c0N/04lM=
+github.com/google/uuid v1.1.1 h1:Gkbcsh/GbpXz7lPftLA3P6TYMwjCLYm83jiFQZF/3gY=
+github.com/google/uuid v1.1.1/go.mod h1:TIyPZe4MgqvfeYDBFedMoGGpEw/LqOeaOT+nhxU+yHo=
+nullprogram.com/x/isaac64 v1.0.0 h1:60wAUcmF8LI7bqmIR84aCviOFYsZ16uzVVQwEv0KMo0=
+nullprogram.com/x/isaac64 v1.0.0/go.mod h1:50jMhq3WThwRpM4z6xTHwp94BMqha3WbuKWb2vRxr78=
+nullprogram.com/x/uuid v1.2.0 h1:2Gofr0nWRlT8PMINGpeN83rviEaf6RxxuJAQvdTwi34=
+nullprogram.com/x/uuid v1.2.0/go.mod h1:nwl5jMz42tJ4nHBs7G/p5sQx0YEXCq2QtFN/Cua1WxE=
