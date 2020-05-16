@@ -1,6 +1,7 @@
 package uuid
 
 import (
+	"encoding/json"
 	"strings"
 	"testing"
 )
@@ -53,5 +54,35 @@ func TestGenerate(t *testing.T) {
 			t.Errorf("NewV4(%#v), UUID appeared twice", u)
 		}
 		seen[u] = struct{}{}
+	}
+}
+
+func TestJSON(t *testing.T) {
+	var _ json.Marshaler = (*UUID)(nil)
+	var _ json.Unmarshaler = (*UUID)(nil)
+
+	type item struct {
+		ID     UUID
+		Parent UUID
+	}
+	original := item{
+		ID:     MustParse("8c938d8d-f312-490f-baac-a5ea2c0abb4d"),
+		Parent: MustParse("58e4a778-46cc-449e-b798-4c427247be14"),
+	}
+
+	buf, err := json.Marshal(&original)
+	if err != nil {
+		t.Errorf("json.Marshal(%#v), error %s", original, err)
+	}
+
+	var parsed item
+	err = json.Unmarshal(buf, &parsed)
+	if err != nil {
+		t.Errorf("json.Unmarshal(%s), error %s", string(buf), err)
+	}
+
+	if parsed != original {
+		t.Errorf("json.Unmarshal(%s), got %#v, want %#v",
+			string(buf), parsed, original)
 	}
 }

@@ -57,18 +57,23 @@ var (
 // that users can directly slice the binary representation.
 type UUID [16]byte
 
-func (u UUID) String() string {
-	const hex = "0123456789abcdef"
-	buf := make([]byte, 36)
+// Stringfy into the given byte buffer.
+func (u UUID) hexify(buf []byte) {
 	buf[8] = '-'
 	buf[13] = '-'
 	buf[18] = '-'
 	buf[23] = '-'
 	for i, j := range encode {
+		const hex = "0123456789abcdef"
 		buf[j+0] = hex[u[i]>>4]
 		buf[j+1] = hex[u[i]&0x0f]
 	}
-	return string(buf)
+}
+
+func (u UUID) String() string {
+	var buf [36]byte
+	u.hexify(buf[:])
+	return string(buf[:])
 }
 
 func (u UUID) MarshalBinary() ([]byte, error) {
@@ -80,6 +85,26 @@ func (u *UUID) UnmarshalBinary(data []byte) error {
 		return errors.New("invalid length")
 	}
 	copy(u[:], data[:])
+	return nil
+}
+
+func (u UUID) MarshalJSON() ([]byte, error) {
+	var buf [38]byte
+	buf[0] = '"'
+	u.hexify(buf[1:])
+	buf[37] = '"'
+	return buf[:], nil
+}
+
+func (u *UUID) UnmarshalJSON(buf []byte) error {
+	if len(buf) != 38 || buf[0] != '"' || buf[37] != '"' {
+		return errInvalid
+	}
+	uuid, err := ParseBytes(buf[1:37])
+	if err != nil {
+		return err
+	}
+	*u = uuid
 	return nil
 }
 
