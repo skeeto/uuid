@@ -83,24 +83,38 @@ func (u *UUID) UnmarshalBinary(data []byte) error {
 	return nil
 }
 
-// Parse a UUID (any version) from its string representation.
-func Parse(s string) (UUID, error) {
+// ParseBytes is like Parse but accepts a byte slice.
+func ParseBytes(buf []byte) (UUID, error) {
 	var u UUID
-	if len(s) != 36 {
+	if len(buf) != 36 {
 		return u, errInvalid
 	}
-	if s[8] != '-' || s[13] != '-' || s[18] != '-' || s[23] != '-' {
+	if buf[8] != '-' || buf[13] != '-' || buf[18] != '-' || buf[23] != '-' {
 		return u, errInvalid
 	}
 	for i, j := range encode {
-		hi := nibbles[s[j+0]]
-		lo := nibbles[s[j+1]]
+		hi := nibbles[buf[j+0]]
+		lo := nibbles[buf[j+1]]
 		if hi == 0xff || lo == 0xff {
 			return u, errInvalid
 		}
 		u[i] = hi<<4 | lo
 	}
 	return u, nil
+}
+
+// Parse decodes a UUID (any version) from its string representation.
+func Parse(s string) (UUID, error) {
+	return ParseBytes([]byte(s))
+}
+
+// MustParse is like Parse but panics if the string is invalid.
+func MustParse(s string) UUID {
+	uuid, err := Parse(s)
+	if err != nil {
+		panic(err)
+	}
+	return uuid
 }
 
 // Gen is a version 4 UUID generator backed by a CSPRNG.
